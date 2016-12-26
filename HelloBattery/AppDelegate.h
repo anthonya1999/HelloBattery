@@ -8,6 +8,8 @@
 
 #import <Cocoa/Cocoa.h>
 
+#define kIOPSTimeRemainingUnlimited ((CFTimeInterval)-2.0)
+
 @interface AppDelegate : NSObject <NSApplicationDelegate, NSMenuDelegate>
 
 @property (strong, nonatomic) NSStatusItem *statusItem;

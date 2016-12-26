@@ -7,7 +7,7 @@
 //
 
 #import "AppDelegate.h"
-#import <IOKit/ps/IOPowerSources.h>
+#include <dlfcn.h>
 
 @implementation AppDelegate
 
@@ -48,7 +48,16 @@
 - (void)updateRemainingItem {
     self.remainingItem = nil;
     
+    void *IOKit = dlopen("/System/Library/Frameworks/IOKit.framework/IOKit", RTLD_LAZY);
+    NSParameterAssert(IOKit);
+    
+    CFTimeInterval (*IOPSGetTimeRemainingEstimate)(void) = dlsym(IOKit, "IOPSGetTimeRemainingEstimate");
+    NSParameterAssert(IOPSGetTimeRemainingEstimate);
+    
     CFTimeInterval timeRemaining = IOPSGetTimeRemainingEstimate();
+    
+    dlclose(IOKit);
+    
     int minutes = (int)(timeRemaining / 60) % 60;
     int hours = (int)timeRemaining / 3600;
     
@@ -59,6 +68,9 @@
         }
         else if (hours == 0) {
             title = [NSString stringWithFormat:@"Time Remaining: %@ minutes", @(minutes)];
+        }
+        else if (timeRemaining == 0) {
+            title = @"Calculating...";
         }
         else {
             title = [NSString stringWithFormat:@"Time Remaining: %@ hours, %@ minutes", @(hours), @(minutes)];
