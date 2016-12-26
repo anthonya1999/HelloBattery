@@ -54,7 +54,12 @@
     
     NSString *title = nil;
     if (timeRemaining != kIOPSTimeRemainingUnlimited) {
-        title = [NSString stringWithFormat:@"Time Remaining: %@ hours, %@ minutes", @(hours), @(minutes)];
+        if (hours == 1) {
+            title = [NSString stringWithFormat:@"Time Remaining: %@ hour, %@ minutes", @(hours), @(minutes)];
+        }
+        else {
+            title = [NSString stringWithFormat:@"Time Remaining: %@ hours, %@ minutes", @(hours), @(minutes)];
+        }
     }
     else {
         title = @"Battery is either fully charged or connected to power.";
