@@ -57,6 +57,9 @@
         if (hours == 1) {
             title = [NSString stringWithFormat:@"Time Remaining: %@ hour, %@ minutes", @(hours), @(minutes)];
         }
+        if (hours == 0) {
+            title = [NSString stringWithFormat:@"Time Remaining: %@ minutes", @(minutes)];
+        }
         else {
             title = [NSString stringWithFormat:@"Time Remaining: %@ hours, %@ minutes", @(hours), @(minutes)];
         }
