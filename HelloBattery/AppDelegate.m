@@ -24,7 +24,7 @@
     
     self.statusMenu = [[NSMenu alloc] init];
     
-    NSMenuItem *titleItem = [[NSMenuItem alloc] initWithTitle:@"HelloBattery" action:nil keyEquivalent:@""];
+    NSMenuItem *titleItem = [[NSMenuItem alloc] initWithTitle:@"HelloBattery (Click to Quit)" action:@selector(terminate:) keyEquivalent:@""];
     NSMenuItem *separatorItem = [NSMenuItem separatorItem];
     
     [self.statusMenu addItem:titleItem];
