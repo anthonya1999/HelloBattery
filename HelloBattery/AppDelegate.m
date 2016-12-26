@@ -62,15 +62,16 @@
     int hours = (int)timeRemaining / 3600;
     
     NSString *title = nil;
-    if (timeRemaining != kIOPSTimeRemainingUnlimited) {
+    
+    if (timeRemaining == kIOPSTimeRemainingUnknown) {
+        title = @"Time Remaining: Calculating...";
+    }
+    else if (timeRemaining != kIOPSTimeRemainingUnlimited) {
         if (hours == 1) {
             title = [NSString stringWithFormat:@"Time Remaining: %@ hour, %@ minutes", @(hours), @(minutes)];
         }
         else if (hours == 0) {
             title = [NSString stringWithFormat:@"Time Remaining: %@ minutes", @(minutes)];
-        }
-        else if (timeRemaining == 0) {
-            title = @"Calculating...";
         }
         else {
             title = [NSString stringWithFormat:@"Time Remaining: %@ hours, %@ minutes", @(hours), @(minutes)];

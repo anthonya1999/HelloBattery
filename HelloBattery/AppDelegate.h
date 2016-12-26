@@ -9,6 +9,7 @@
 #import <Cocoa/Cocoa.h>
 
 #define kIOPSTimeRemainingUnlimited ((CFTimeInterval)-2.0)
+#define kIOPSTimeRemainingUnknown ((CFTimeInterval)-1.0)
 
 @interface AppDelegate : NSObject <NSApplicationDelegate, NSMenuDelegate>
 
