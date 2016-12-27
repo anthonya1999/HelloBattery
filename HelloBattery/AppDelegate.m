@@ -67,7 +67,7 @@
         mutableTitle = @"Calculating...";
     }
     else if (timeRemaining != kIOPSTimeRemainingUnlimited) {
-        if ([minutes doubleValue] >= 9) {
+        if ([minutes doubleValue] <= 9) {
             minutes = [NSString stringWithFormat:@"0%@", minutes];
         }
         mutableTitle = [NSString stringWithFormat:@"%@:%@", hours, minutes];
