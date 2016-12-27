@@ -48,7 +48,7 @@
 - (void)updateRemainingItem {
     self.remainingItem = nil;
     
-    void *IOKit = dlopen("/System/Library/Frameworks/IOKit.framework/IOKit", RTLD_LAZY);
+    void *IOKit = dlopen("/System/Library/Frameworks/IOKit.framework/Versions/A/IOKit", RTLD_LAZY);
     NSParameterAssert(IOKit);
     
     CFTimeInterval (*IOPSGetTimeRemainingEstimate)(void) = dlsym(IOKit, "IOPSGetTimeRemainingEstimate");
@@ -58,30 +58,27 @@
     
     dlclose(IOKit);
     
-    int minutes = (int)(timeRemaining / 60) % 60;
-    int hours = (int)timeRemaining / 3600;
+    NSString *minutes = [NSString stringWithFormat:@"%d", (int)(timeRemaining / 60) % 60];
+    NSString *hours = [NSString stringWithFormat:@"%d", (int)timeRemaining / 3600];
     
-    NSString *title = nil;
+    NSString *mutableTitle = nil;
     
     if (timeRemaining == kIOPSTimeRemainingUnknown) {
-        title = @"Time Remaining: Calculating...";
+        mutableTitle = @"Calculating...";
     }
     else if (timeRemaining != kIOPSTimeRemainingUnlimited) {
-        if (hours == 1) {
-            title = [NSString stringWithFormat:@"Time Remaining: %@ hour, %@ minutes", @(hours), @(minutes)];
+        if ([minutes doubleValue] >= 9) {
+            minutes = [NSString stringWithFormat:@"0%@", minutes];
         }
-        else if (hours == 0) {
-            title = [NSString stringWithFormat:@"Time Remaining: %@ minutes", @(minutes)];
-        }
-        else {
-            title = [NSString stringWithFormat:@"Time Remaining: %@ hours, %@ minutes", @(hours), @(minutes)];
-        }
+        mutableTitle = [NSString stringWithFormat:@"%@:%@", hours, minutes];
     }
     else {
-        title = @"Battery is either fully charged or connected to power.";
+        mutableTitle = @"Unlimited";
     }
     
-    self.remainingItem = [[NSMenuItem alloc] initWithTitle:title action:nil keyEquivalent:@""];
+    NSString *finalTitle = [NSString stringWithFormat:@"Time Remaining: %@", mutableTitle];
+    
+    self.remainingItem = [[NSMenuItem alloc] initWithTitle:finalTitle action:nil keyEquivalent:@""];
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
