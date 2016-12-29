@@ -25,9 +25,14 @@
     self.statusMenu = [[NSMenu alloc] init];
     
     NSMenuItem *titleItem = [[NSMenuItem alloc] initWithTitle:@"HelloBattery (Click to Quit)" action:@selector(terminate:) keyEquivalent:@""];
+    
+    NSString *appVersionString = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+    NSMenuItem *versionItem = [[NSMenuItem alloc] initWithTitle:[NSString stringWithFormat:@"Version %@", appVersionString] action:nil keyEquivalent:@""];
+    
     NSMenuItem *separatorItem = [NSMenuItem separatorItem];
     
     [self.statusMenu addItem:titleItem];
+    [self.statusMenu addItem:versionItem];
     [self.statusMenu addItem:separatorItem];
     
     [self updateRemainingItem];
@@ -67,7 +72,7 @@
         mutableTitle = @"Calculating...";
     }
     else if (timeRemaining != kIOPSTimeRemainingUnlimited) {
-        if ([minutes doubleValue] <= 9) {
+        if ([minutes intValue] <= 9) {
             minutes = [NSString stringWithFormat:@"0%@", minutes];
         }
         mutableTitle = [NSString stringWithFormat:@"%@:%@", hours, minutes];
